@@ -18,7 +18,10 @@ def gitignore_creator(output, template_names):
     for template_name in template_names:
         logger.debug(template_name)
 
-        output_buffer.append(fig.renderText(template_name))
+        header_text = fig.renderText(template_name)
+        # comment out the figlet text
+        header_text = '\n'.join(['# {}'.format(line) for line in header_text.split('\n')]) 
+        output_buffer.append(header_text)
         
         response = requests.get('{}{}.gitignore'.format(GITIGNORE_REPO_URL, template_name))
         if response.status_code != 200:
